@@ -200,7 +200,7 @@ def news_insert():
     news = news_cur.fetchall()
     return_values = []
     for new in news:
-        newscategory_dict = {'id': category['id'], 'title': category['title'], 'is_deleted': category['is_deleted']}
+        newscategory_dict = {'id': new['id'], 'title': new['title'], 'is_deleted': new['is_deleted']}
         return_values.append(newscategory_dict)
 
     return jsonify({'newscategory': return_values})
