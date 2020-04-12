@@ -171,8 +171,8 @@ def category_add():
 @app.route('/news', methods=['GET'])
 def news_get_all():
     db = get_db()
-    newscategory_cur = db.execute('select * from news')
-    news = newscategory_cur.fetchall()
+    news_cur = db.execute(('select n.*, u.username, ng.title as categoryname from news n inner join user u on n.user_id = u.id inner join newscategory ng on n.category_id = ng.id'))
+    news = news_cur.fetchall()
     return_values = []
     for new in news:
         newscategory_dict = {'id': new['id'], 'title': new['title'], 'is_deleted': new['is_deleted']}
