@@ -57,8 +57,8 @@ def close_db(error):
         g.sqlite_db.close()
 
 
-@jwt_required
 @app.route('/users', methods=['GET'])
+@jwt_required
 def user_get_all():
     db = get_db()
     user_cur = db.execute('select * from user')
@@ -76,8 +76,8 @@ def user_get_all():
     return jsonify({'users': return_values})
 
 
-@jwt_required
 @app.route('/user/add', methods=['POST'])
+@jwt_required
 def user_insert():
     data = request.get_json()
     username = data['username']
@@ -107,8 +107,8 @@ def user_insert():
         return jsonify({'users': return_values})
 
 
-@jwt_required
 @app.route('/users/edit', methods=['POST'])
+@jwt_required
 def user_edit():
     data = request.get_json()
     user_id = data['user_id']
@@ -134,8 +134,8 @@ def user_edit():
     return jsonify({'users': return_values})
 
 
-@jwt_required
 @app.route('/category', methods=['POST'])
+@jwt_required
 def category_get_all():
     db = get_db()
     newscategory_cur = db.execute('select * from newscategory')
@@ -148,8 +148,8 @@ def category_get_all():
     return jsonify({'newscategory': return_values})
 
 
-@jwt_required
 @app.route('/category/add', methods=['POST'])
+@jwt_required
 def category_add():
     data = request.get_json()
     title = data['title']
@@ -167,8 +167,8 @@ def category_add():
     return jsonify({'newscategory': return_values})
 
 
-@jwt_required
 @app.route('/news', methods=['GET'])
+@jwt_required
 def news_get_all():
     db = get_db()
     news_cur = db.execute(('select n.*, u.username, ng.title as categoryname from news n inner join user u on n.user_id = u.id inner join newscategory ng on n.category_id = ng.id'))
@@ -182,6 +182,7 @@ def news_get_all():
 
 
 @app.route('/news/add', methods=['POST'])
+@jwt_required
 def news_insert():
     data = request.get_json()
     title = data['title']
@@ -207,6 +208,7 @@ def news_insert():
 
 
 @app.route('/news/edit', methods=['POST'])
+@jwt_required
 def news_update():
     data = request.get_json()
     news_id = data['news_id']
@@ -222,7 +224,8 @@ def news_update():
     news = news_cur.fetchall()
     return_values = []
     for new in news:
-        newscategory_dict = {'id': new['id'], 'title': category['title'], 'is_deleted': category['is_deleted']}
+        newscategory_dict = {'id': new['id'], 'title': new['title'], 'body': new['body'], 'is_deleted': new['is_deleted'],
+                             'create_date': new['create_date']}
         return_values.append(newscategory_dict)
 
     return jsonify({'newscategory': return_values})
