@@ -82,7 +82,7 @@ def user_insert():
     data = request.get_json()
     username = data['username']
     password = data['password']
-    email = data['password']
+    email = data['email']
     is_active = data['isactive']
     db = get_db()
     spec_user = db.execute('select * from user where username = ?', [username])
@@ -115,7 +115,7 @@ def user_edit():
     username = data['username']
     password = data['password']
     email = data['password']
-    is_active = data['i_sactive']
+    is_active = data['is_sactive']
     db = get_db()
     db.execute('update user set username = ?, password = ?, email = ?, is_active = ? where id = ?', [username, password, email, is_active, user_id])
     db.commit()
