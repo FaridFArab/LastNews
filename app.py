@@ -175,10 +175,11 @@ def news_get_all():
     news = news_cur.fetchall()
     return_values = []
     for new in news:
-        newscategory_dict = {'id': new['id'], 'title': new['title'], 'is_deleted': new['is_deleted']}
-        return_values.append(newscategory_dict)
+        news_dict = {'id': new['id'], 'title': new['title'], 'body': new['body'], 'is_deleted': new['is_deleted'],
+                     'create_date': new['create_date'], 'username': new['username'], 'categoryname': new['categoryname']}
+        return_values.append(news_dict)
 
-    return jsonify({'newscategory': return_values})
+    return jsonify({'news': return_values})
 
 
 @app.route('/news/add', methods=['POST'])
@@ -201,10 +202,11 @@ def news_insert():
     news = news_cur.fetchall()
     return_values = []
     for new in news:
-        newscategory_dict = {'id': new['id'], 'title': new['title'], 'is_deleted': new['is_deleted']}
-        return_values.append(newscategory_dict)
+        news_dict = {'id': new['id'], 'title': new['title'], 'body': new['body'], 'is_deleted': new['is_deleted'],
+                     'create_date': new['create_date'], 'username': new['username'], 'categoryname': new['categoryname']}
+        return_values.append(news_dict)
 
-    return jsonify({'newscategory': return_values})
+    return jsonify({'news': return_values})
 
 
 @app.route('/news/edit', methods=['POST'])
@@ -228,7 +230,7 @@ def news_update():
                              'create_date': new['create_date'], 'username': new['username'], 'categoryname': new['categoryname']}
         return_values.append(news_dict)
 
-    return jsonify({'newscategory': return_values})
+    return jsonify({'news': return_values})
 
 
 if __name__ == '__main__':
