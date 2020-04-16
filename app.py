@@ -171,7 +171,7 @@ def category_add():
 @jwt_required
 def news_get_all():
     db = get_db()
-    news_cur = db.execute(('select n.*, u.username, ng.title as categoryname from news n inner join user u on n.user_id = u.id inner join newscategory ng on n.category_id = ng.id'))
+    news_cur = db.execute(('select n.*, u.username, ng.title as categoryname from news n left join user u on n.user_id = u.id left join newscategory ng on n.category_id = ng.id'))
     news = news_cur.fetchall()
     return_values = []
     for new in news:
