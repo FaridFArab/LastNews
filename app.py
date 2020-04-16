@@ -189,12 +189,12 @@ def news_insert():
     created_date = data['created_date']
     category_id = data['category_id']
     body = data['body']
-    is_deleted = data['created_date']
+    is_deleted = data['is_deleted']
     image_url = data['image_url']
     user_id = data['user_id']
 
     db = get_db()
-    db.execute('insert into news(title, created_date, category_id, body, is_deleted, image, user_id) '
+    db.execute('insert into news(title, createdate, category_id, body, is_deleted, image, user_id) '
                         'values (?, ?, ?, ?, ?, ?, ?)', [title, created_date, category_id, body, is_deleted, image_url, user_id])
     db.commit()
     news_cur = db.execute('select n.*, u.username, ng.title as categoryname from news n inner join user u on n.user_id = u.id inner join newscategory ng on n.category_id = ng.id')
