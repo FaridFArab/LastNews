@@ -176,7 +176,7 @@ def news_get_all():
     return_values = []
     for new in news:
         news_dict = {'id': new['id'], 'title': new['title'], 'body': new['body'], 'is_deleted': new['is_deleted'],
-                     'create_date': new['create_date'], 'username': new['username'], 'categoryname': new['categoryname']}
+                     'create_date': new['createdate'], 'username': new['username'], 'categoryname': new['categoryname']}
         return_values.append(news_dict)
 
     return jsonify({'news': return_values})
