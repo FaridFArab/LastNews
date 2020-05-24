@@ -10,12 +10,13 @@ from functools import wraps
 app = Flask(__name__)
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_COOKIE_CSRF_PROTECT'] = False
-app.config['JWT_SECRET_KEY'] = 'lastnewscreatedbypsychofaridandmassoudac'  # Change this!
+app.config['JWT_SECRET_KEY'] = 'lastnewscreatedbypsychofaridandmassoudac'
 jwt = JWTManager(app)
 
 
 @app.route('/token/auth', methods=['POST'])
 def login():
+    print('dick')
     data = request.get_json()
     username = data['username']
     password = data['password']
@@ -26,10 +27,10 @@ def login():
         return jsonify({'login': False}), 401
 
     access_token = create_access_token(identity=username)
-    refresh_token = create_refresh_token(identity=username)
+    # refresh_token = create_refresh_token(identity=username)
     resp = jsonify({'login': True, 'Token': access_token})
-    set_access_cookies(resp, access_token)
-    set_refresh_cookies(resp, refresh_token)
+    # set_access_cookies(resp, access_token)
+    # set_refresh_cookies(resp, refresh_token)
     return resp, 200
 
 
