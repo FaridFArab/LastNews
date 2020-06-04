@@ -27,7 +27,7 @@ def login():
         return jsonify({'login': False}), 401
 
     access_token = create_access_token(identity=username)
-    # refresh_token = create_refresh_token(identity=username)
+    refresh_token = create_refresh_token(identity=username)
     resp = jsonify({'login': True, 'Token': access_token})
     # set_access_cookies(resp, access_token)
     # set_refresh_cookies(resp, refresh_token)
