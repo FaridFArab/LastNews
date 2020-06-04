@@ -9,7 +9,7 @@ from functools import wraps
 
 app = Flask(__name__)
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-app.config['JWT_COOKIE_CSRF_PROTECT'] = False
+app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 app.config['JWT_SECRET_KEY'] = 'lastnewscreatedbypsychofaridandmassoudac'
 jwt = JWTManager(app)
 
