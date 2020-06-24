@@ -8,15 +8,10 @@ from database import get_db
 from functools import wraps
 
 app = Flask(__name__)
-app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-app.config['JWT_COOKIE_CSRF_PROTECT'] = True
-app.config['JWT_SECRET_KEY'] = 'lastnewscreatedbypsychofaridandmassoudac'
-jwt = JWTManager(app)
 
 
 @app.route('/token/auth', methods=['POST'])
 def login():
-    print('dick')
     data = request.get_json()
     username = data['username']
     password = data['password']
@@ -34,23 +29,6 @@ def login():
     return resp, 200
 
 
-@app.route('/token/refresh', methods=['POST'])
-@jwt_refresh_token_required
-def refresh():
-    current_user = get_jwt_identity()
-    access_token = create_access_token(identity=current_user)
-
-    resp = jsonify({'refresh': True})
-    set_access_cookies(resp, access_token)
-    return resp, 200
-
-
-@app.route('/token/remove', methods=['POST'])
-def logout():
-    resp = jsonify({'logout': True})
-    unset_jwt_cookies(resp)
-    return resp, 200
-
 
 @app.teardown_appcontext
 def close_db(error):
@@ -59,7 +37,6 @@ def close_db(error):
 
 
 @app.route('/users', methods=['GET'])
-@jwt_required
 def user_get_all():
     db = get_db()
     user_cur = db.execute('select * from user')
@@ -78,7 +55,6 @@ def user_get_all():
 
 
 @app.route('/user/add', methods=['POST'])
-@jwt_required
 def user_insert():
     data = request.get_json()
     username = data['username']
@@ -109,7 +85,6 @@ def user_insert():
 
 
 @app.route('/users/edit', methods=['POST'])
-@jwt_required
 def user_edit():
     data = request.get_json()
     user_id = data['user_id']
@@ -136,7 +111,6 @@ def user_edit():
 
 
 @app.route('/category', methods=['POST'])
-@jwt_required
 def category_get_all():
     db = get_db()
     newscategory_cur = db.execute('select * from newscategory')
@@ -150,7 +124,6 @@ def category_get_all():
 
 
 @app.route('/category/add', methods=['POST'])
-@jwt_required
 def category_add():
     data = request.get_json()
     title = data['title']
@@ -169,7 +142,6 @@ def category_add():
 
 
 @app.route('/news', methods=['GET'])
-@jwt_required
 def news_get_all():
     db = get_db()
     news_cur = db.execute(('select n.*, u.username, ng.title as categoryname from news n left join user u on n.user_id = u.id left join newscategory ng on n.category_id = ng.id'))
@@ -184,7 +156,6 @@ def news_get_all():
 
 
 @app.route('/news/add', methods=['POST'])
-@jwt_required
 def news_insert():
     data = request.get_json()
     title = data['title']
@@ -211,7 +182,6 @@ def news_insert():
 
 
 @app.route('/news/edit', methods=['POST'])
-@jwt_required
 def news_update():
     data = request.get_json()
     news_id = data['news_id']
