@@ -1,10 +1,19 @@
 from flask import Flask, request, g, jsonify
 from database import get_db
+from flask_httpauth import HTTPBasicAuth
 
 app = Flask(__name__)
+auth = HTTPBasicAuth()
 
 
-@app.route('/token/auth', methods=['POST'])
+@app.route('/api/resource')
+@auth.login_required
+def get_resource():
+    return jsonify({'data': 'Hello, %s!' % g.username})
+
+
+@auth.verify_password
+@app.route('/auth', methods=['POST'])
 def login():
     data = request.get_json()
     username = data['username']
@@ -13,9 +22,9 @@ def login():
     spec_user = db.execute('select * from user where username = ? and password = ?', [username, password])
     user = spec_user.fetchall()
     if not user:
-        return jsonify({'login': False}), 401
-    else:
-        return jsonify({'login': True}), 200
+        return jsonify({"Result": "False"}), 200
+    g.user = user
+    return jsonify({"Result": "True"}), 200
 
 
 @app.teardown_appcontext
@@ -24,7 +33,8 @@ def close_db(error):
         g.sqlite_db.close()
 
 
-@app.route('/users', methods=['GET'])
+@app.route('/users', methods=['POST'])
+@auth.login_required
 def user_get_all():
     db = get_db()
     user_cur = db.execute('select * from user')
