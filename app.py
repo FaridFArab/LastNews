@@ -1,11 +1,5 @@
 from flask import Flask, request, g, jsonify
-from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,
-                                jwt_refresh_token_required, create_refresh_token,
-                                get_jwt_identity, set_access_cookies,
-                                set_refresh_cookies, unset_jwt_cookies)
-from ORM import user, category, news
 from database import get_db
-from functools import wraps
 
 app = Flask(__name__)
 
@@ -20,14 +14,8 @@ def login():
     user = spec_user.fetchall()
     if not user:
         return jsonify({'login': False}), 401
-
-    access_token = create_access_token(identity=username)
-    refresh_token = create_refresh_token(identity=username)
-    resp = jsonify({'login': True, 'Token': access_token})
-    set_access_cookies(resp, access_token)
-    set_refresh_cookies(resp, refresh_token)
-    return resp, 200
-
+    else:
+        return jsonify({'login': True}), 200
 
 
 @app.teardown_appcontext
