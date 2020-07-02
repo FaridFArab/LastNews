@@ -187,7 +187,7 @@ def news_insert():
 @jwt_required
 def news_update():
     data = request.get_json()
-    news_id = data['news_id']
+    news_id = data['id']
     title = data['title']
     category_id = data['category_id']
     body = data['body']
