@@ -217,15 +217,8 @@ def news_delete():
     db = get_db()
     db.execute('update news set is_deleted = ? where id = ?', [is_deleted, news_id])
     db.commit()
-    news_cur = db.execute('select n.*, u.username, ng.title as categoryname from news n inner join user u on n.user_id = u.id inner join newscategory ng on n.category_id = ng.id ')
-    news = news_cur.fetchall()
-    return_values = []
-    for new in news:
-        news_dict = {'id': new['id'], 'title': new['title'], 'body': new['body'], 'is_deleted': new['is_deleted'],
-                             'created_date': new['create_date'], 'image_url': new['image'], 'username': new['username'], 'categoryname': new['categoryname']}
-        return_values.append(news_dict)
 
-    return jsonify({'news': return_values})
+    return jsonify({'Message': 'Delete complete'})
 
 
 if __name__ == '__main__':
