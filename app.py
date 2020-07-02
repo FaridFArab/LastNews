@@ -191,7 +191,8 @@ def news_update():
     title = data['title']
     category_id = data['category_id']
     body = data['body']
-    is_deleted = data['created_date']
+    created_date = data['created_date']
+    is_deleted = data['is_deleted']
 
     db = get_db()
     db.execute('update news set title = ?, category_id = ?, body = ?, is_deleted = ? where id = ?', [title, category_id, body, is_deleted, news_id])
@@ -201,7 +202,7 @@ def news_update():
     return_values = []
     for new in news:
         news_dict = {'id': new['id'], 'title': new['title'], 'body': new['body'], 'is_deleted': new['is_deleted'],
-                             'create_date': new['create_date'], 'image_url': new['image'], 'username': new['username'], 'categoryname': new['categoryname']}
+                             'created_date': new['create_date'], 'image_url': new['image'], 'username': new['username'], 'categoryname': new['categoryname']}
         return_values.append(news_dict)
 
     return jsonify({'news': return_values})
