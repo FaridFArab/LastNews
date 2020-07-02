@@ -174,15 +174,8 @@ def news_insert():
     db.execute('insert into news(title, createdate, category_id, body, is_deleted, image, user_id) '
                         'values (?, ?, ?, ?, ?, ?, ?)', [title, created_date, category_id, body, is_deleted, image_url, user_id])
     db.commit()
-    news_cur = db.execute('select n.*, u.username, ng.title as categoryname from news n inner join user u on n.user_id = u.id inner join newscategory ng on n.category_id = ng.id')
-    news = news_cur.fetchall()
-    return_values = []
-    for new in news:
-        news_dict = {'id': new['id'], 'title': new['title'], 'body': new['body'], 'is_deleted': new['is_deleted'],
-                     'create_date': new['createdate'], 'image_url': new['image'], 'username': new['username'], 'categoryname': new['categoryname']}
-        return_values.append(news_dict)
 
-    return jsonify({'news': return_values})
+    return jsonify({'message': 'Add news complete !'})
 
 
 @app.route('/news/edit', methods=['POST'])
@@ -198,15 +191,7 @@ def news_update():
     db = get_db()
     db.execute('update news set title = ?, category_id = ?, body = ?, createdate = ? where id = ?', [title, category_id, body, createdate, news_id])
     db.commit()
-    news_cur = db.execute('select n.*, u.username, ng.title as categoryname from news n inner join user u on n.user_id = u.id inner join newscategory ng on n.category_id = ng.id ')
-    news = news_cur.fetchall()
-    return_values = []
-    for new in news:
-        news_dict = {'id': new['id'], 'title': new['title'], 'body': new['body'], 'is_deleted': new['is_deleted'],
-                             'created_date': new['create_date'], 'image_url': new['image'], 'username': new['username'], 'categoryname': new['categoryname']}
-        return_values.append(news_dict)
-
-    return jsonify({'news': return_values})
+    return jsonify({'message': 'News update complete'})
 
 
 @app.route('/news/delete', methods=['POST'])
