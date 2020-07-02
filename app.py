@@ -88,8 +88,8 @@ def user_edit():
     user_id = data['user_id']
     username = data['username']
     password = data['password']
-    email = data['password']
-    is_active = data['is_sactive']
+    email = data['email']
+    is_active = data['is_active']
     db = get_db()
     db.execute('update user set username = ?, password = ?, email = ?, is_active = ? where id = ?', [username, password, email, is_active, user_id])
     db.commit()
