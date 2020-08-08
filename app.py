@@ -208,5 +208,10 @@ def news_delete():
     return jsonify({'Message': 'Delete complete'})
 
 
+@app.errorhandler(404)
+def error_handler_404(e):
+    template = "<h2>The requested page doesn't exists</h2>"
+    return template, 404
+
 if __name__ == '__main__':
     app.run()
